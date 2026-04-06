@@ -7,16 +7,13 @@ app = FastAPI()
 
 
 def obtener_hora_ntp():
-    """Obtiene la hora oficial desde el servidor NTP del SHOA."""
     client = ntplib.NTPClient()
     try:
-        
         response = client.request('ntp.shoa.cl', version=3, timeout=5)
 
         dt = datetime.fromtimestamp(response.tx_time)
         return dt.strftime('%Y-%m-%d %H:%M:%S')
     except Exception:
-       
         return None
 
 

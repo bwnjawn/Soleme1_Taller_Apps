@@ -2,6 +2,7 @@
 
 ## Descripción del Proyecto
 API desarrollada con FastAPI que devuelve la fecha y hora actual en formato JSON (Año-Mes-Día Hora:Minuto:Segundo). El proyecto incluye automatización de pruebas, linting y construcción de imágenes Docker mediante un pipeline de CI/CD en GitHub Actions.
+
 `Integrantes:` Benjamín Ojeda, Bruno Sanhueza.
 
 ## Instrucciones de Ejecución Local

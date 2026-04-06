@@ -15,15 +15,15 @@ API desarrollada con FastAPI que devuelve la fecha y hora actual en formato JSON
 
 
 ## Instrucciones de Ejecución con Docker
-1. Construir la imagen de Docker:
+### 1. Construir la imagen de Docker:
     docker build -t solemne-1 .
-2. Ejecutar el contenedor mapeando el puerto 8000:
+### 2. Ejecutar el contenedor mapeando el puerto 8000:
     docker run -d -p 8000:8000 --name api-time solemne-1
 
 ## Instrucciones para Testear la API
-1. Mediante cURL:
+### 1. Mediante cURL:
     curl http://localhost:8000/time
-2. Mediante Navegador Web:
+### 2. Mediante Navegador Web:
     http://localhost:8000/time
-3. Pruebas Unitarias:
+### 3. Pruebas Unitarias:
     uv run pytest

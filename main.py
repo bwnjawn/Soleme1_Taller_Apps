@@ -1,52 +1,33 @@
 from datetime import datetime
 
-import requests
-from bs4 import BeautifulSoup
+import ntplib
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
-def obtener_hora_scraping():
-    url = "https://www.horaoficial.cl/"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+def obtener_hora_ntp():
+    """Obtiene la hora oficial desde el servidor NTP del SHOA."""
+    client = ntplib.NTPClient()
     try:
-        response = requests.get(url, headers=headers, timeout=5)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
+        # Consultamos al servidor oficial ntp.shoa.cl
+        response = client.request('ntp.shoa.cl', version=3, timeout=5)
 
-        # Buscamos la fila de Chile Continental
-        filas = soup.find_all("tr")
-        for fila in filas:
-            if "chile continental" in fila.get_text().lower():
-                celdas = fila.find_all("td")
-                if len(celdas) >= 2:
-                    return celdas[1].get_text(strip=True)
+        # Convertimos el timestamp de la red a un objeto datetime local
+        # Usamos la hora local del sistema donde corre el contenedor
+        dt = datetime.fromtimestamp(response.tx_time)
+        return dt.strftime('%Y-%m-%d %H:%M:%S')
     except Exception:
+        # Si el servidor NTP no responde, retornamos None para usar el respaldo
         return None
-    return None
 
 
-@app.get("/time")
+@app.get('/time')
 async def get_time():
-    hora_scrapeada = obtener_hora_scraping()
+    hora_oficial = obtener_hora_ntp()
 
-    # Si el scraping falla, usamos la hora del sistema como respaldo (para no sacar un 1.0)
-    if not hora_scrapeada:
-        now = datetime.now()
-    else:
-        # Combinamos la fecha de hoy con la hora obtenida del scraping
-        fecha_hoy = datetime.now().strftime("%Y-%m-%d")
-        return {"current_time": f"{fecha_hoy} {hora_scrapeada}"}
+    # Si falla la conexión NTP, usamos la hora del sistema como respaldo
+    if not hora_oficial:
+        hora_oficial = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    return {"current_time": now.strftime("%Y-%m-%d %H:%M:%S")}
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        app, host="0.0.0.0", port=8000
-    )  # Requerimiento de puerto [cite: 21, 33]
+    return {'current_time': hora_oficial}

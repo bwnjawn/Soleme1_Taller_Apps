@@ -9,7 +9,7 @@ def test_get_time():
 
     response = client.get('/time')
     assert response.status_code == 200
-    assert 'current_time' in response.json()
+    assert 'hora_actual' in response.json()
 
 
 def test_not_found():

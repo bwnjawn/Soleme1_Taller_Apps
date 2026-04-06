@@ -3,12 +3,9 @@
 __pycache__/
 *.py[cod]
 
-# Variables de entorno
-.env
-
 # IDEs
 .vscode/
 .idea/
 
-# Docker (opcional, si generas logs locales)
+# Docker
 *.log

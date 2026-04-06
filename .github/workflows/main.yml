@@ -11,22 +11,22 @@ jobs:
     - name: Checkout del código
       uses: actions/checkout@v4
 
-    # revisar si es mejor usar pip install
     - name: Instalar uv
       run: pip install uv
-
     
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
     - name: Instalar dependencias
       run: uv sync --frozen
 
-    
     - name: Ejecutar ruff
-      run: uv run ruff check --fix .
+      run: uv run ruff check .
 
-    
     - name: Ejecutar pruebas con pytest
       run: uv run pytest
-
 
     - name: Iniciar sesión en Docker Hub
       uses: docker/login-action@v3
@@ -34,7 +34,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    
     - name: Construir y publicar imagen Docker
       uses: docker/build-push-action@v5
       with:

@@ -6,22 +6,23 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-def obtener_hora_ntp():
+def obtener_hora():
     client = ntplib.NTPClient()
     try:
         response = client.request('ntp.shoa.cl', version=3, timeout=5)
-
         dt = datetime.fromtimestamp(response.tx_time)
-        return dt.strftime('%Y-%m-%d %H:%M:%S')
+        dt = dt.strftime('%Y-%m-%d %H:%M:%S')
+        return dt
     except Exception:
         return None
 
 
 @app.get('/time')
 async def get_time():
-    hora_oficial = obtener_hora_ntp()
+    hora_oficial = obtener_hora()
 
     if not hora_oficial:
-        hora_oficial = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        hora_oficial = datetime.now()
+        hora_oficial = hora_oficial.strftime('%Y-%m-%d %H:%M:%S')
 
-    return {'current_time': hora_oficial}
+    return {'hora_actual': hora_oficial}

@@ -11,7 +11,7 @@ jobs:
     - name: Checkout del código
       uses: actions/checkout@v4
 
-    # revisar si es mejor usar pip install
+
     - name: Instalar uv
       run: pip install uv
 
@@ -40,5 +40,5 @@ jobs:
       with:
         context: .
         push: true
-        # Reemplaza 'tu-usuario' con tu nombre de cuenta en Docker Hub
+  
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/solemne-1:latest

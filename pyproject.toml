@@ -1,7 +1,7 @@
 [project]
 name = "solemne-1"
 version = "0.1.0"
-description = "Add your description here"
+description = "Solemne 1, Fastapi para entraga de hora actual"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

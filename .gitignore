@@ -1,0 +1,14 @@
+# Entorno virtual
+.venv/
+__pycache__/
+*.py[cod]
+
+# Variables de entorno
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# Docker (opcional, si generas logs locales)
+*.log
